@@ -1,7 +1,7 @@
 from pythonds.basic.stack import Stack
+import re
 
-
-
+#使用栈判断是否符合规则 ((())) 符合 (())))))不符合
 # def count(s1,s2):
 #     l1 =list(s1)
 #     l2 = list(s2)
@@ -38,7 +38,7 @@ from pythonds.basic.stack import Stack
 #      print(perchecker("((()))"))
 
 
-
+# 使用栈，判断是否符合规则"){}{){)}" 不符合    ({[]}) 符合
 # def perchecker2(string):
 #     s = Stack()
 #     res = True
@@ -68,6 +68,77 @@ from pythonds.basic.stack import Stack
 # if __name__ == "__main__":
 #     print(perchecker2("({[]})"))
 #     print(perchecker2("){}{){)}"))
+
+
+#十进制转二进制
+# def per(num):
+#     s = Stack()
+#     while num > 0:
+#         ten = num % 2
+#         s.push(ten)
+#         num = num // 2
+#     string = ""
+#     while not s.isEmpty():
+#         string += str(s.pop())
+#     return string
+# if __name__ == "__main__":
+#     print(per(233))
+
+#计算表达式的转换
+# (1+3) * 2     new = [(,1,3,),2] s = (,+,),*
+def per(string):
+    prec = {}
+    prec["*"] = 3
+    prec["/"] = 3
+    prec["+"] = 2
+    prec["-"] = 2
+    prec["("] = 1
+    s = Stack()
+    new = []
+    tokenl = string.split()
+    for token in tokenl:
+        if re.match(r'[0-9A-Z]]',token):
+            new.append(token)
+        elif token == "(":
+            s.push(token)
+        elif token == ")":
+            toptoken = s.pop()
+            while toptoken != "(":
+                new.append(toptoken)
+                toptoken = s.pop()
+        else:
+            while (not s.isEmpty()) and \
+            (prec[s.peek()] >= prec[token]):new.append(s.pop())
+            s.push(token)
+
+    while not s.isEmpty():
+        new.append(s.pop())
+    return "".join(new)
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    per("(1+3)*2")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
